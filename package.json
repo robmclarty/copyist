@@ -2,7 +2,7 @@
   "name": "copyist",
   "version": "0.0.1",
   "description": "An easy to use markdown GUI",
-  "main": "./src/app/index.js",
+  "main": "./build/copyist.js",
   "scripts": {
     "test": "haha no"
   },

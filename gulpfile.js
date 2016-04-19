@@ -40,23 +40,15 @@ gulp.task('build:app', function () {
     plugins: ['babel-plugin-transform-object-rest-spread']
   };
   const stream = browserify(browserifyOptions)
-    .transform(envify())
     .transform(babelify.configure(babelifyOptions));
 
   return stream
     .bundle()
-    .pipe(source('application.js'))
+    .pipe(source('copyist.js'))
     .pipe(buffer())
     .pipe(gulpif(!isProduction, sourcemaps.init({ loadMaps: true })))
       .pipe(gulpif(isProduction, uglify()))
     .pipe(gulpif(!isProduction, sourcemaps.write('.')))
-    .pipe(gulp.dest('./build'));
-});
-
-// Simply copy the base example html file to the build/ folder.
-gulp.task('build:html', function () {
-  return gulp
-    .src('./src/app/index.html')
     .pipe(gulp.dest('./build'));
 });
 
@@ -68,7 +60,7 @@ gulp.task('build:styles', function () {
   return gulp
     .src('./src/styles/main.scss')
     .pipe(gulpif(!isProduction, sourcemaps.init({ loadMaps: true })))
-      .pipe(concat('application.scss'))
+      .pipe(concat('copyist.scss'))
       .pipe(sass({ style: 'expanded' }))
       .pipe(autoprefixer(autoprefixerBrowsers))
       .pipe(gulpif(isProduction, minifycss()))
@@ -86,7 +78,7 @@ gulp.task('clean', function () {
 // If not set to production env, React will perform additional checks and
 // validations and output errors and warnings to the console, and thus also
 // perform slower.
-function setProductionEnv(done)
+function setProductionEnv(done) {
   process.env.NODE_ENV = 'production';
   done();
 }
@@ -99,26 +91,30 @@ function watch() {
 watch.description = 'Watch variable folders for changes and rebuild if necessary.';
 gulp.task(watch);
 
+// Build for production (includes minification, etc.).
+const buildProduction = gulp.series(
+  'clean',
+  setProductionEnv,
+  gulp.parallel(
+    'build:app',
+    'build:styles'
+  )
+);
+
+// Build for development (include React dev, no minification, etc.).
+const buildDevelopment = gulp.parallel(
+  'build:app',
+  'build:styles'
+);
+
 // Choose between building for dev or production based on --production flag.
 function build(done) {
-  if (argv.production) {
-    return gulp.series(
-      'clean',
-      setProductionEnv,
-      gulp.parallel(
-        'build:app',
-        'build:html',
-        'build:styles'
-      )
-    );
-  }
+  argv.production ?
+    buildProduction() :
+    buildDevelopment();
 
-  return gulp.parallel(
-    'build:app',
-    'build:html',
-    'build:styles'
-  );
-});
+  return done();
+}
 build.description = 'Build all the things!';
 build.flags = {
   '--production': 'Builds in production mode (e.g., minification, etc.).'
