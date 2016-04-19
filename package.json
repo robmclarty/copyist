@@ -1,0 +1,27 @@
+{
+  "name": "copyist",
+  "version": "0.0.1",
+  "description": "An easy to use markdown GUI",
+  "main": "index.js",
+  "scripts": {
+    "test": "haha no"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/robmclarty/copyist.git"
+  },
+  "keywords": [
+    "markdown",
+    "editor",
+    "writing",
+    "cms",
+    "text",
+    "html"
+  ],
+  "author": "Rob McLarty <r@robmclarty.com> (http://robmclarty.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/robmclarty/copyist/issues"
+  },
+  "homepage": "https://github.com/robmclarty/copyist#readme"
+}
