@@ -4,11 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Simple :: Copyist</title>
-  <link rel="stylesheet" href="../../build/copyist.css">
+  <link rel="stylesheet" href="../../dist/copyist.css">
 </head>
 <body>
-  <div class="copyist-app"></div>
+  <div id="copyist-container"></div>
 
-  <script src="../../build/copyist.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
+  <script src="../../dist/copyist-standalone.js"></script>
+  <script>
+  console.log(Copyist.default);
+    ReactDOM.render(
+      React.createElement(Copyist),
+      document.getElementById('copyist-container')
+    );
+  </script>
 </body>
 </html>

@@ -7,6 +7,7 @@ const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
 const browserify = require('browserify');
 const babelify = require('babelify');
+const shimify = require('browserify-global-shim');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const minifycss = require('gulp-cssnano');
@@ -42,6 +43,9 @@ gulp.task('build:app', function () {
   const stream = browserify(browserifyOptions)
     .transform(babelify.configure(babelifyOptions));
 
+  // Don't include React in the build (can be included as the user sees fit).
+  stream.external('react');
+
   return stream
     .bundle()
     .pipe(source('copyist.js'))
@@ -49,6 +53,41 @@ gulp.task('build:app', function () {
     .pipe(gulpif(!isProduction, sourcemaps.init({ loadMaps: true })))
       .pipe(gulpif(isProduction, uglify()))
     .pipe(gulpif(!isProduction, sourcemaps.write('.')))
+    .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('build:app:standalone', function () {
+  const browserifyOptions = {
+    entries: ['./src/app'],
+    debug: true,
+    fullPaths: false,
+    standalone: 'Copyist'
+  };
+  const babelifyOptions = {
+    presets: ['es2015', 'react'],
+    plugins: [
+      // Include ES7 Object spread operator { ...stuff, ...otherstuff }.
+      'babel-plugin-transform-object-rest-spread',
+      // This just makes it so `export default` works implicitly, otherwise
+      // you'd need to do `require('thing').default` in Babel 6
+      'add-module-exports'
+    ]
+  };
+  const shimOptions = {
+    'react': 'React'
+  };
+  const stream = browserify(browserifyOptions)
+    .transform(babelify.configure(babelifyOptions))
+    .transform(shimify.configure(shimOptions));
+
+  // Don't include React in the build (can be included as the user sees fit).
+  stream.external('react');
+
+  return stream
+    .bundle()
+    .pipe(source('copyist-standalone.js'))
+    .pipe(buffer())
+    //.pipe(uglify())
     .pipe(gulp.dest('./dist'));
 });
 
@@ -97,6 +136,7 @@ const buildProduction = gulp.series(
   setProductionEnv,
   gulp.parallel(
     'build:app',
+    'build:app:standalone',
     'build:styles'
   )
 );
@@ -104,6 +144,7 @@ const buildProduction = gulp.series(
 // Build for development (include React dev, no minification, etc.).
 const buildDevelopment = gulp.parallel(
   'build:app',
+  'build:app:standalone',
   'build:styles'
 );
 
