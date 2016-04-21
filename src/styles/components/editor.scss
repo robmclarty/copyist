@@ -1,0 +1,27 @@
+.copyist-editor {
+  display: flex;
+  flex-direction: column;
+}
+
+.copyist-editor-controls {
+  flex: 0 0 auto;
+  height: $editor-controls-height;
+}
+
+.copyist-editor-input {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+
+  textarea {
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    resize: none;
+
+    &:focus {
+      outline-width: 0;
+    }
+  }
+}

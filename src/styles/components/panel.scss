@@ -1,0 +1,35 @@
+.copyist-panels {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  flex-flow: row;
+}
+
+.copyist-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 50%;
+  flex-wrap: wrap;
+
+  &.left {
+  }
+
+  &.right {
+    border-left: 1px solid $panel-divider-col;
+  }
+}
+
+.copyist-panel-content {
+  flex: 1;
+}
+
+.copyist-panel-footer {
+  display: flex;
+  flex: 0 0 auto;
+  height: 2em;
+  border-top: 1px solid $panel-divider-col;
+}
+
+.copyist-panel-extra {
+  margin-left: auto;
+}

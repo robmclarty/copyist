@@ -49,7 +49,7 @@ gulp.task('build:app', function () {
     .pipe(gulpif(!isProduction, sourcemaps.init({ loadMaps: true })))
       .pipe(gulpif(isProduction, uglify()))
     .pipe(gulpif(!isProduction, sourcemaps.write('.')))
-    .pipe(gulp.dest('./build'));
+    .pipe(gulp.dest('./dist'));
 });
 
 // Compile all SASS into CSS along with auto-prefixing and rev-replace static
@@ -65,13 +65,13 @@ gulp.task('build:styles', function () {
       .pipe(autoprefixer(autoprefixerBrowsers))
       .pipe(gulpif(isProduction, minifycss()))
     .pipe(gulpif(!isProduction, sourcemaps.write()))
-    .pipe(gulp.dest('./build'));
+    .pipe(gulp.dest('./dist'));
 });
 
 // Wipe out any existing files and folders in the build/ directory so we can
 // start again fresh.
 gulp.task('clean', function () {
-  return del(['./build/**/*']);
+  return del(['./dist/**/*']);
 });
 
 // Set NODE_ENV to 'production'. Used when compiling React for production mode.
@@ -86,7 +86,7 @@ function setProductionEnv(done) {
 // Rebuild assets when changes are made.
 function watch() {
   gulp.watch('./src/styles/**/*', gulp.parallel('build:styles'));
-  gulp.watch('./src/app/**/*', gulp.parallel('build:app', 'build:html'));
+  gulp.watch('./src/app/**/*', gulp.parallel('build:app'));
 }
 watch.description = 'Watch variable folders for changes and rebuild if necessary.';
 gulp.task(watch);

@@ -1,0 +1,15 @@
+.copyist {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: 16px; // value of 1em
+}
+
+.copyist *,
+.copyist *:before,
+.copyist *:after {
+  box-sizing: border-box;
+}
