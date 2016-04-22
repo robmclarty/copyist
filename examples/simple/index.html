@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Simple :: Copyist</title>
   <link rel="stylesheet" href="../../dist/copyist.css">
+
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
   <div id="copyist-container"></div>
@@ -13,9 +21,26 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
   <script src="../../dist/copyist-standalone.js"></script>
   <script>
-  console.log(Copyist.default);
+    var sampleTitle = "This is Just a Sample Title";
+    var sampleMarkdown = "## Sample Markdown\n\n" +
+      "This is some **bold text**, and this is some _italic text_.\n\n" +
+      "# This is a heading.\n\n" +
+      "### This is a 3rd level heading.\n\n" +
+      "```javascript\n" +
+        "console.log('stuff');\n\n" +
+        "function thing() {\n  doStuff();\n}\n" +
+      "```\n\n" +
+      "[http://somelink.com](http://somlink.com)\n\n" +
+      "|Col1|Col2|Col3|\n" +
+      "|----|----|----|\n" +
+      "|Data One|Data Two|Data Three|\n" +
+      "|More Data One|More Data Two|More Data Three|";
+
     ReactDOM.render(
-      React.createElement(Copyist),
+      React.createElement(Copyist, {
+        title: sampleTitle,
+        markdown: sampleMarkdown
+      }),
       document.getElementById('copyist-container')
     );
   </script>

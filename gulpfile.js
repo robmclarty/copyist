@@ -107,6 +107,12 @@ gulp.task('build:styles', function () {
     .pipe(gulp.dest('./dist'));
 });
 
+gulp.task('build:assets', function () {
+  return gulp
+    .src('./src/assets/**/*')
+    .pipe(gulp.dest('./dist'));
+});
+
 // Wipe out any existing files and folders in the build/ directory so we can
 // start again fresh.
 gulp.task('clean', function () {
@@ -125,7 +131,7 @@ function setProductionEnv(done) {
 // Rebuild assets when changes are made.
 function watch() {
   gulp.watch('./src/styles/**/*', gulp.parallel('build:styles'));
-  gulp.watch('./src/app/**/*', gulp.parallel('build:app'));
+  gulp.watch('./src/app/**/*', gulp.parallel('build:app', 'build:app:standalone'));
 }
 watch.description = 'Watch variable folders for changes and rebuild if necessary.';
 gulp.task(watch);
@@ -137,7 +143,8 @@ const buildProduction = gulp.series(
   gulp.parallel(
     'build:app',
     'build:app:standalone',
-    'build:styles'
+    'build:styles',
+    'build:assets'
   )
 );
 
@@ -145,7 +152,8 @@ const buildProduction = gulp.series(
 const buildDevelopment = gulp.parallel(
   'build:app',
   'build:app:standalone',
-  'build:styles'
+  'build:styles',
+  'build:assets'
 );
 
 // Choose between building for dev or production based on --production flag.

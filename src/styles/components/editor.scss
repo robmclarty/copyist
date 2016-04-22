@@ -1,27 +1,69 @@
 .copyist-editor {
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }
 
 .copyist-editor-controls {
   flex: 0 0 auto;
   height: $editor-controls-height;
+  border-bottom: 1px solid $panel-divider-col;
 }
 
 .copyist-editor-input {
   display: flex;
-  flex-direction: column;
   flex: 1 1 auto;
 
   textarea {
-    flex: 1;
-    padding: 0;
+    width: 100%;
+    padding: 1em;
     margin: 0;
     border: 0;
     resize: none;
+    font-family: Courier, monospace;
+    color: #333;
 
     &:focus {
       outline-width: 0;
     }
   }
 }
+
+.copyist-bold-button,
+.copyist-italic-button,
+.copyist-image-button,
+.copyist-link-button,
+.copyist-ol-button,
+.copyist-ul-button,
+.copyist-quote-button,
+.copyist-code-button,
+.copyist-undo-button,
+.copyist-redo-button,
+.copyist-custom-button,
+.copyist-distraction-free-button,
+.copyist-bold-button:before,
+.copyist-italic-button:before,
+.copyist-image-button:before,
+.copyist-link-button:before,
+.copyist-ol-button:before,
+.copyist-ul-button:before,
+.copyist-quote-button:before,
+.copyist-code-button:before,
+.copyist-undo-button:before,
+.copyist-redo-button:before,
+.copyist-custom-button:before
+.copyist-distraction-free-button:before {
+  @include fontawesome();
+}
+.copyist-bold-button:before { content: "\f032"; }
+.copyist-italic-button:before { content: "\f033"; }
+.copyist-image-button:before { content: "\f03e"; }
+.copyist-link-button:before { content: "\f0c1"; }
+.copyist-ol-button:before { content: "\f0cb"; }
+.copyist-ul-button:before { content: "\f0ca"; }
+.copyist-quote-button:before { content: "\f10e"; }
+.copyist-code-button:before { content: "\f121"; }
+.copyist-undo-button:before { content: "\f0e2"; }
+.copyist-redo-button:before { content: "\f01e"; }
+.copyist-custom-button:before { content: "\f219"; }
+.copyist-distraction-free-button:before { content: "\f065"; }

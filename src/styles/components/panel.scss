@@ -9,27 +9,30 @@
   display: flex;
   flex-direction: column;
   flex: 1 1 50%;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 
-  &.left {
-  }
-
-  &.right {
+  &.with-divider {
     border-left: 1px solid $panel-divider-col;
   }
 }
 
 .copyist-panel-content {
-  flex: 1;
+  flex: 1 1 auto;
+  width: 100%;
 }
 
 .copyist-panel-footer {
   display: flex;
   flex: 0 0 auto;
+  width: 100%;
   height: 2em;
+  padding: 0 .5em;
   border-top: 1px solid $panel-divider-col;
+  line-height: 2em;
+  color: #aaa;
 }
 
 .copyist-panel-extra {
   margin-left: auto;
+  color: #333;
 }

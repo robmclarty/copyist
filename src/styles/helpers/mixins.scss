@@ -1,0 +1,22 @@
+@mixin iconfonts() {
+  display: inline-block;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin fontawesome() {
+  @include iconfonts();
+  font-family: "fontawesome";
+}
+
+@mixin ionicons() {
+  @include iconfonts();
+  font-family: "ionicons";
+}

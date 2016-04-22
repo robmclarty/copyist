@@ -1,0 +1,24 @@
+.copyist-preview {
+  overflow: auto;
+
+  pre {
+    background-color: #f8f8f8;
+    padding: 1em;
+    overflow-x: auto;
+    // TODO: fix this so overflowing text triggers scrollbar
+  }
+
+  table {
+    td, th {
+      padding: 5px;
+      background-color: #f8f8f8;
+    }
+  }
+}
+
+// TODO: Allow user-defined styles to go here so that in-production styles
+// for a website or theme can be used to render the preview.
+.copyist-preview-content {
+  padding: 1em 2em 2em 2em;
+  font-family: Helvetica, Arial, sans-serif;
+}

@@ -4,6 +4,10 @@
   flex: 0 0 auto;
   height: $header-height;
   border-bottom: 1px solid $panel-divider-col;
+
+  input {
+    font-weight: bold;
+  }
 }
 
 .copyist-global-controls {
@@ -21,4 +25,19 @@
   &:focus {
     outline-width: 0;
   }
+}
+
+.copyist-settings-button,
+.copyist-save-button,
+.copyist-settings-button:before,
+.copyist-save-button:before {
+  @include fontawesome();
+}
+.copyist-settings-button:before { content: "\f013"; }
+.copyist-save-button:before {
+  padding-right: 5px;
+  content: "\f0ee";
+}
+.copyist-save-button {
+  padding: 0 10px;
 }
