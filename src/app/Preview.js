@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import hljs from 'highlight.js';
 import mdConverter from 'markdown-it';
-//import mdHighlightjs from 'markdown-it-highlightjs';
 // import mdContainer from 'markdown-it-container';
 // import mdDecorate from 'markdown-it-decorate';
 // import mdExpandTabs from 'markdown-it-expand-tabs';
@@ -10,22 +9,7 @@ import mdConverter from 'markdown-it';
 const mdOptions = {
   linkify: true,
   breaks: true,
-  // highlight: function (str, lang) {
-  //   console.log('lang: ', lang);
-  //   console.log('hljs: ', hljs.getLanguage(lang));
-  //   if (lang && hljs.getLanguage(lang)) {
-  //     try {
-  //       return '<pre class="hljs"><code>' +
-  //              hljs.highlight(lang, str, true).value +
-  //              '</code></pre>';
-  //     } catch (__) {}
-  //   }
-  //
-  //   return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
-  // }
   highlight: function (str, lang) {
-    console.log('lang: ', lang);
-    console.log('hljs: ', hljs.getLanguage(lang));
     if (lang && hljs.getLanguage(lang)) {
       try {
         return hljs.highlight(lang, str).value;
@@ -56,13 +40,46 @@ const createMarkup = (markdown) => ({
   __html: md.render(markdown)
 });
 
-const Editor = ({ markdown }) => (
-  <div className="copyist-preview copyist-panel-content">
-    <div
-        className="copyist-preview-content"
-        dangerouslySetInnerHTML={createMarkup(markdown)}>
-    </div>
-  </div>
-);
+const Preview = React.createClass({
+  displayName: 'Preview',
 
-export default Editor;
+  propTypes: {
+    markdown: PropTypes.string,
+    scrollPercent: PropTypes.number,
+    onScroll: PropTypes.func
+  },
+
+  getDefaultProps: function () {
+    return {
+      markdown: '',
+      scrollPercent: 0
+    };
+  },
+
+  componentDidUpdate: function () {
+    const previewEl = this.refs.preview;
+    const scrollOffset = this.props.scrollPercent * previewEl.scrollHeight / 100;
+
+    previewEl.scrollTop = scrollOffset;
+  },
+
+  onScroll: function (e) {
+    this.props.onScroll(e.target.scrollTop * 100 / e.target.scrollHeight);
+  },
+
+  render: function () {
+    return (
+      <div
+          ref="preview"
+          className="copyist-preview copyist-panel-content"
+          onScroll={this.onScroll}>
+        <div
+            className="copyist-preview-content"
+            dangerouslySetInnerHTML={createMarkup(this.props.markdown)}>
+        </div>
+      </div>
+    );
+  }
+});
+
+export default Preview;

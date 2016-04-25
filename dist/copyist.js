@@ -23447,54 +23447,84 @@ module.exports.Z   = require('./categories/Z/regex');
 },{"./categories/Cc/regex":216,"./categories/Cf/regex":217,"./categories/P/regex":218,"./categories/Z/regex":219,"./properties/Any/regex":221}],221:[function(require,module,exports){
 module.exports=/[\0-\uD7FF\uDC00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF]/
 },{}],222:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Editor = function Editor(_ref) {
-  var markdown = _ref.markdown;
-  var _onChange = _ref.onChange;
-  return _react2.default.createElement(
-    "div",
-    { className: "copyist-editor copyist-panel-content" },
-    _react2.default.createElement(
-      "div",
-      { className: "copyist-editor-controls" },
-      _react2.default.createElement("button", { className: "copyist-bold-button" }),
-      _react2.default.createElement("button", { className: "copyist-italic-button" }),
-      _react2.default.createElement("button", { className: "copyist-image-button" }),
-      _react2.default.createElement("button", { className: "copyist-link-button" }),
-      _react2.default.createElement("button", { className: "copyist-ol-button" }),
-      _react2.default.createElement("button", { className: "copyist-ul-button" }),
-      _react2.default.createElement("button", { className: "copyist-quote-button" }),
-      _react2.default.createElement("button", { className: "copyist-code-button" }),
-      _react2.default.createElement("button", { className: "copyist-undo-button" }),
-      _react2.default.createElement("button", { className: "copyist-redo-button" }),
-      _react2.default.createElement("button", { className: "copyist-custom-button" })
-    ),
-    _react2.default.createElement(
-      "div",
-      { className: "copyist-editor-input" },
-      _react2.default.createElement("textarea", {
-        className: "copyist-editor-textarea",
-        defaultValue: markdown,
-        onChange: function onChange(e) {
-          return _onChange(e.target.value);
-        },
-        onScroll: function onScroll(e) {
-          return console.log('scrolling');
-        } })
-    )
-  );
-};
+var Editor = _react2.default.createClass({
+  displayName: 'Editor',
+
+  propTypes: {
+    markdown: _react.PropTypes.string,
+    scrollPercent: _react.PropTypes.number,
+    onChange: _react.PropTypes.func,
+    onScroll: _react.PropTypes.func
+  },
+
+  getDefaultProps: function getDefaultProps() {
+    return {
+      markdown: '',
+      scrollPercent: 0
+    };
+  },
+
+  componentDidUpdate: function componentDidUpdate() {
+    var editorEl = this.refs.editor;
+    var scrollOffset = this.props.scrollPercent * editorEl.scrollHeight / 100;
+    console.log('editor: ', scrollOffset);
+
+    editorEl.scrollTop = scrollOffset;
+  },
+
+  onScroll: function onScroll(e) {
+    this.props.onScroll(e.target.scrollTop * 100 / e.target.scrollHeight);
+  },
+
+  render: function render() {
+    var _this = this;
+
+    return _react2.default.createElement(
+      'div',
+      { className: 'copyist-editor copyist-panel-content' },
+      _react2.default.createElement(
+        'div',
+        { className: 'copyist-editor-controls' },
+        _react2.default.createElement('button', { className: 'copyist-bold-button' }),
+        _react2.default.createElement('button', { className: 'copyist-italic-button' }),
+        _react2.default.createElement('button', { className: 'copyist-image-button' }),
+        _react2.default.createElement('button', { className: 'copyist-link-button' }),
+        _react2.default.createElement('button', { className: 'copyist-ol-button' }),
+        _react2.default.createElement('button', { className: 'copyist-ul-button' }),
+        _react2.default.createElement('button', { className: 'copyist-quote-button' }),
+        _react2.default.createElement('button', { className: 'copyist-code-button' }),
+        _react2.default.createElement('button', { className: 'copyist-undo-button' }),
+        _react2.default.createElement('button', { className: 'copyist-redo-button' }),
+        _react2.default.createElement('button', { className: 'copyist-custom-button' })
+      ),
+      _react2.default.createElement(
+        'div',
+        {
+          ref: 'editor',
+          className: 'copyist-editor-input',
+          onScroll: this.onScroll },
+        _react2.default.createElement('textarea', {
+          className: 'copyist-editor-textarea',
+          defaultValue: this.props.markdown,
+          onChange: function onChange(e) {
+            return _this.props.onChange(e.target.value);
+          } })
+      )
+    );
+  }
+});
 
 exports.default = Editor;
 
@@ -23562,7 +23592,6 @@ var _markdownIt2 = _interopRequireDefault(_markdownIt);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import mdHighlightjs from 'markdown-it-highlightjs';
 // import mdContainer from 'markdown-it-container';
 // import mdDecorate from 'markdown-it-decorate';
 // import mdExpandTabs from 'markdown-it-expand-tabs';
@@ -23571,22 +23600,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var mdOptions = {
   linkify: true,
   breaks: true,
-  // highlight: function (str, lang) {
-  //   console.log('lang: ', lang);
-  //   console.log('hljs: ', hljs.getLanguage(lang));
-  //   if (lang && hljs.getLanguage(lang)) {
-  //     try {
-  //       return '<pre class="hljs"><code>' +
-  //              hljs.highlight(lang, str, true).value +
-  //              '</code></pre>';
-  //     } catch (__) {}
-  //   }
-  //
-  //   return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
-  // }
   highlight: function highlight(str, lang) {
-    console.log('lang: ', lang);
-    console.log('hljs: ', _highlight2.default.getLanguage(lang));
     if (lang && _highlight2.default.getLanguage(lang)) {
       try {
         return _highlight2.default.highlight(lang, str).value;
@@ -23619,18 +23633,48 @@ var createMarkup = function createMarkup(markdown) {
   };
 };
 
-var Editor = function Editor(_ref) {
-  var markdown = _ref.markdown;
-  return _react2.default.createElement(
-    'div',
-    { className: 'copyist-preview copyist-panel-content' },
-    _react2.default.createElement('div', {
-      className: 'copyist-preview-content',
-      dangerouslySetInnerHTML: createMarkup(markdown) })
-  );
-};
+var Preview = _react2.default.createClass({
+  displayName: 'Preview',
 
-exports.default = Editor;
+  propTypes: {
+    markdown: _react.PropTypes.string,
+    scrollPercent: _react.PropTypes.number,
+    onScroll: _react.PropTypes.func
+  },
+
+  getDefaultProps: function getDefaultProps() {
+    return {
+      markdown: '',
+      scrollPercent: 0
+    };
+  },
+
+  componentDidUpdate: function componentDidUpdate() {
+    var previewEl = this.refs.preview;
+    var scrollOffset = this.props.scrollPercent * previewEl.scrollHeight / 100;
+
+    previewEl.scrollTop = scrollOffset;
+  },
+
+  onScroll: function onScroll(e) {
+    this.props.onScroll(e.target.scrollTop * 100 / e.target.scrollHeight);
+  },
+
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      {
+        ref: 'preview',
+        className: 'copyist-preview copyist-panel-content',
+        onScroll: this.onScroll },
+      _react2.default.createElement('div', {
+        className: 'copyist-preview-content',
+        dangerouslySetInnerHTML: createMarkup(this.props.markdown) })
+    );
+  }
+});
+
+exports.default = Preview;
 
 },{"highlight.js":3,"markdown-it":158,"react":"react"}],225:[function(require,module,exports){
 'use strict';
@@ -23677,7 +23721,8 @@ var Copyist = _react2.default.createClass({
   getInitialState: function getInitialState() {
     return {
       title: '',
-      markdown: ''
+      markdown: '',
+      scrollPercent: 0
     };
   },
 
@@ -23699,7 +23744,9 @@ var Copyist = _react2.default.createClass({
   // Only re-render if the nextProps are different from the current props.
   shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
     var propsChanged = nextProps.markdown !== this.props.markdown || nextProps.title !== this.props.title;
-    var stateChanged = nextState.markdown !== this.state.markdown || nextState.title !== this.state.title;
+    var stateTextChanged = nextState.markdown !== this.state.markdown || nextState.title !== this.state.title;
+    var scrollChanged = nextState.scrollPercent !== this.state.scrollPercent;
+    var stateChanged = stateTextChanged || scrollChanged;
 
     return propsChanged || stateChanged;
   },
@@ -23715,6 +23762,10 @@ var Copyist = _react2.default.createClass({
   // triggers and callbacks for syncing with outside sources.
   onChangeMarkdown: function onChangeMarkdown(updatedMarkdown) {
     this.setState({ markdown: updatedMarkdown });
+  },
+
+  onScroll: function onScroll(percentScrolled) {
+    this.setState({ scrollPercent: percentScrolled });
   },
 
   render: function render() {
@@ -23733,7 +23784,9 @@ var Copyist = _react2.default.createClass({
           { className: 'copyist-panel' },
           _react2.default.createElement(_Editor2.default, {
             markdown: this.state.markdown,
-            onChange: this.onChangeMarkdown
+            onChange: this.onChangeMarkdown,
+            scrollPercent: this.state.scrollPercent,
+            onScroll: this.onScroll
           }),
           _react2.default.createElement(
             'div',
@@ -23754,7 +23807,9 @@ var Copyist = _react2.default.createClass({
           'div',
           { className: 'copyist-panel with-divider' },
           _react2.default.createElement(_Preview2.default, {
-            markdown: this.state.markdown
+            markdown: this.state.markdown,
+            scrollPercent: this.state.scrollPercent,
+            onScroll: this.onScroll
           }),
           _react2.default.createElement(
             'div',

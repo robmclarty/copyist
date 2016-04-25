@@ -15,13 +15,14 @@ const Copyist = React.createClass({
     return {
       title: 'Sample Titlte',
       markdown: ''
-    }
+    };
   },
 
   getInitialState: function () {
     return {
       title: '',
-      markdown: ''
+      markdown: '',
+      scrollPercent: 0
     };
   },
 
@@ -44,8 +45,10 @@ const Copyist = React.createClass({
   shouldComponentUpdate: function (nextProps, nextState) {
     const propsChanged = nextProps.markdown !== this.props.markdown ||
       nextProps.title !== this.props.title;
-    const stateChanged = nextState.markdown !== this.state.markdown ||
+    const stateTextChanged = nextState.markdown !== this.state.markdown ||
       nextState.title !== this.state.title;
+    const scrollChanged = nextState.scrollPercent !== this.state.scrollPercent;
+    const stateChanged = stateTextChanged || scrollChanged;
 
     return propsChanged || stateChanged;
   },
@@ -63,6 +66,10 @@ const Copyist = React.createClass({
     this.setState({ markdown: updatedMarkdown });
   },
 
+  onScroll: function (percentScrolled) {
+    this.setState({ scrollPercent: percentScrolled });
+  },
+
   render: function () {
     return (
       <div className="copyist">
@@ -76,6 +83,8 @@ const Copyist = React.createClass({
             <Editor
                 markdown={this.state.markdown}
                 onChange={this.onChangeMarkdown}
+                scrollPercent={this.state.scrollPercent}
+                onScroll={this.onScroll}
             />
 
             <div className="copyist-panel-footer">
@@ -89,6 +98,8 @@ const Copyist = React.createClass({
           <div className="copyist-panel with-divider">
             <Preview
                 markdown={this.state.markdown}
+                scrollPercent={this.state.scrollPercent}
+                onScroll={this.onScroll}
             />
 
             <div className="copyist-panel-footer">

@@ -1,7 +1,6 @@
 .copyist-editor {
   display: flex;
   flex-direction: column;
-  overflow: auto;
 }
 
 .copyist-editor-controls {
@@ -13,6 +12,7 @@
 .copyist-editor-input {
   display: flex;
   flex: 1 1 auto;
+  overflow: auto;
 
   textarea {
     width: 100%;
